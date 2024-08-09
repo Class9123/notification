@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Button</title>
+</head>
+<body>
+    <button id="notifyButton">Send Notification</button>
+
+    <script>
+        // Function to request notification permission
+        function requestNotificationPermission() {
+            if (Notification.permission === "default") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        console.log("Notification permission granted.");
+                    } else {
+                        console.log("Notification permission denied.");
+                    }
+                });
+            }
+        }
+
+        // Function to send notification
+        function sendNotification() {
+            if (Notification.permission === "granted") {
+                new Notification("Hello! This is a notification.");
+            } else {
+                console.log("Notification permission not granted.");
+            }
+        }
+
+        // Request permission on page load
+        requestNotificationPermission();
+
+        // Set up button click handler
+        document.getElementById('notifyButton').addEventListener('click', sendNotification);
+    </script>
+</body>
+</html>
