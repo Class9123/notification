@@ -3,39 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notification Button</title>
+    <title>Notification Example</title>
 </head>
 <body>
-    <button id="notifyButton">Send Notification</button>
+    <h1>Notification with Promises</h1>
+    <button id="notifyBtn">Send Notification</button>
 
     <script>
-        // Function to request notification permission
-        function requestNotificationPermission() {
-            if (Notification.permission === "default") {
-                Notification.requestPermission().then(permission => {
+        document.getElementById('notifyBtn').addEventListener('click', function() {
+            // Check if the browser supports notifications
+            if ("Notification" in window) {
+                // Request permission for sending notifications
+                Notification.requestPermission().then(function(permission) {
                     if (permission === "granted") {
-                        console.log("Notification permission granted.");
+                        sendNotification("Hello!", "This is a notification sent using Promises.");
                     } else {
                         console.log("Notification permission denied.");
                     }
                 });
-            }
-        }
-
-        // Function to send notification
-        function sendNotification() {
-            if (Notification.permission === "granted") {
-                new Notification("Hello! This is a notification without an icon.");
             } else {
-                console.log("Notification permission not granted.");
+                console.log("This browser does not support notifications.");
             }
+        });
+
+        function sendNotification(title, body) {
+            return new Promise(function(resolve, reject) {
+                try {
+                    let notification = new Notification(title, { body: body });
+                    notification.onclick = function() {
+                        resolve("Notification clicked");
+                    };
+                    notification.onclose = function() {
+                        resolve("Notification closed");
+                    };
+                } catch (error) {
+                    reject("Error sending notification: " + error.message);
+                }
+            }).then(function(result) {
+                console.log(result);
+            }).catch(function(error) {
+                console.log(error);
+            });
         }
-
-        // Request permission on page load
-        requestNotificationPermission();
-
-        // Set up button click handler
-        document.getElementById('notifyButton').addEventListener('click', sendNotification);
     </script>
 </body>
 </html>
