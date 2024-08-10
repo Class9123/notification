@@ -10,13 +10,26 @@
     <button id="notifyBtn">Send Notification</button>
 
     <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(function(error) {
+                console.log('Service Worker registration failed:', error);
+            });
+        }
+
         document.getElementById('notifyBtn').addEventListener('click', function() {
-            // Check if the browser supports notifications
             if ("Notification" in window) {
-                // Request permission for sending notifications
                 Notification.requestPermission().then(function(permission) {
                     if (permission === "granted") {
-                        sendNotification("Hello!", "This is a notification sent using Promises.");
+                        navigator.serviceWorker.ready.then(function(registration) {
+                            registration.showNotification("Hello!", {
+                                body: "This is a notification sent using Promises.",
+                                icon: 'icon.png',
+                                badge: 'badge.png'
+                            });
+                        });
                     } else {
                         console.log("Notification permission denied.");
                     }
@@ -25,26 +38,6 @@
                 console.log("This browser does not support notifications.");
             }
         });
-
-        function sendNotification(title, body) {
-            return new Promise(function(resolve, reject) {
-                try {
-                    let notification = new Notification(title, { body: body });
-                    notification.onclick = function() {
-                        resolve("Notification clicked");
-                    };
-                    notification.onclose = function() {
-                        resolve("Notification closed");
-                    };
-                } catch (error) {
-                    reject("Error sending notification: " + error.message);
-                }
-            }).then(function(result) {
-                console.log(result);
-            }).catch(function(error) {
-                console.log(error);
-            });
-        }
     </script>
 </body>
 </html>
