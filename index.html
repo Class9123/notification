@@ -26,9 +26,7 @@
                     if (permission === "granted") {
                         navigator.serviceWorker.ready.then(function(registration) {
                             registration.showNotification("Hello!", {
-                                body: "This is a notification sent using Promises.",
-                                icon: 'icon.png',
-                                badge: 'badge.png'
+                                body: "This is a notification sent using Promises."
                             });
                         });
                     } else {
