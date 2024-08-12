@@ -20,7 +20,6 @@
                 console.log('Service Worker registration failed:', error);
             });
         }
-
         document.getElementById('notifyBtn').addEventListener('click', function() {
             if ("Notification" in window) {
                 Notification.requestPermission().then(function(permission) {
