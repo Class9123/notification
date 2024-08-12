@@ -5,7 +5,6 @@ self.addEventListener('install', function(event) {
 self.addEventListener('activate', function(event) {
     console.log('Service Worker activated');
 });
-
 self.addEventListener('push', function(event) {
     const options = {
         body: event.data ? event.data.text() : 'Default body',
