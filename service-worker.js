@@ -7,9 +7,7 @@ self.addEventListener('activate', function(event) {
 });
 self.addEventListener('push', function(event) {
     const options = {
-        body: event.data ? event.data.text() : 'Default body',
-        icon: 'icon.png',
-        badge: 'badge.png'
+        body: event.data ? event.data.text() : 'Default body'
     };
     event.waitUntil(
         self.registration.showNotification('Notification Title', options)
